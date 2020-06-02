@@ -8,7 +8,16 @@
     replace: 'Defaults  !requiretty'
     backup: yes
 
-- name: enable repos
+#- name: enable repos
+#  yum_repository:
+#    name: internal
+#    description: Internal Repo
+#    baseurl: https://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
  
 - name: install base tools and packages
-
+  yum:
+    name: 
+      - python3
+      - git
+      - ansible
+    state: present

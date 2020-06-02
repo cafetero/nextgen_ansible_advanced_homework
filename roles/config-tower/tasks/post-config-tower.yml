@@ -1,4 +1,4 @@
-- name: Create Homework Assignment project
+#- name: Create Homework Assignment project
 
 
 - name: Machine Credentail to connect to workstation using openstack.pub
@@ -44,7 +44,7 @@
     organization: Default
     state: present
     kind: ssh
-    tower_host: tower1.{{tower_GUID}}.example.opentlc.com
+    tower_host: tower1.19d9.example.opentlc.com
     tower_username: admin
     tower_password: r3dh4t1!
     tower_verify_ssl: no
