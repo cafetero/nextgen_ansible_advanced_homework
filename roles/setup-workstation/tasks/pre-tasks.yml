@@ -2,7 +2,6 @@
   authorized_key:
      user: cloud-user
      state: present
-#     key: /root/.ssh/openstack.pub
      key: http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
 - name: Install required packages 
   yum: 

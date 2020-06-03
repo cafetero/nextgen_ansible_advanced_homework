@@ -2,6 +2,7 @@
 
 - name: start {{ payload }}
   service:
-    name: tomcat
+    name: haproxy
     state: started
+    enabled: yes
 

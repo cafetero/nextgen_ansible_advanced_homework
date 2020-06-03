@@ -5,6 +5,7 @@
   os_server:
     cloud: openstack
     name: "{{ item.0.name }}"
+    password: r3dh4t1!
     image: "{{ item.0.image }}"
     key_name: "{{ item.0.key_name }}"
     flavor: "{{ item.0.flavor }}"
@@ -15,7 +16,15 @@
       - net-name: int_network
     meta: "{{ item.1 }}"
     userdata: |
-      cat /root/.ssh/openstack.pub >> /home/cloud-user/.ssh/authorized_keys
+      #!/bin/bash
+      curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
+      cat /tmp/openstack.pub >> /home/cloud-user/.ssh/openstack.pub 
+      cat /tmp/openstack.pub >> /home/cloud-user/.ssh/authorized_keys
+      curl -o /tmp/openstack.pem http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pem
+      cat /tmp/openstack.pem >> /home/cloud-user/.ssh/openstack.pem
+
+      cat /tmp/openstack.pub >> /root/.ssh/openstack.pub
+      cat /tmp/openstack.pub >> /root/.ssh/authorized_keys
   with_subelements:
     - "{{osp_servers}}"
     - meta
@@ -43,13 +52,13 @@
   tags:
     - test.servers
 
-# - name: Print records  
-#   debug:
-#     var: item.name
-#   with_items: 
-#   - "{{ openstack_servers}}"
-#   tags:
-#     - test.servers
+ - name: Print records  
+   debug:
+     var: item.name
+   with_items: 
+   - "{{ openstack_servers}}"
+   tags:
+     - test.servers
 
 - name: Wait for server to be available
   wait_for:
