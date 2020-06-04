@@ -30,15 +30,6 @@
   tags:
   - test.servers
 
-- name: Add user
-  os_user:
-    cloud: openstack
-    state: present
-    name: cloud-user
-    password: r3dh4t1!
-  with_dict: "{{osp_servers}}"
-  tags:
-  - test.servers
 
 - name: Add floating IP to Servers
   os_floating_ip:
