@@ -9,11 +9,11 @@
     backup: yes
 
 - name: enable repos
-  yum_repository:
-    name: internal
-    description: Internal Repo
-    baseurl: https://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
- 
+  copy:
+    src: repos_template.j2
+    dest: /etc/yum.repos.d/three-tier-app.repo
+    mode: u=rw,g=r,o=r
+
 - name: install base tools and packages
   yum:
     name: 
