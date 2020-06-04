@@ -41,7 +41,7 @@ El objetivo del laboratorio es configurar un ambiente de QA y un ambiente de pro
 
 # playbook para desplegar las instancias
 - site-osp-instances
-## ___ Crear las intancias, no funciona el acceso con las llaves__ este archivo se creo desde cero
+## __ Crear las intancias, __ este archivo se creo desde cero
 -- osp-servers
 ### informacion de los servidores a desplegar con las llaves
 --- var/main.yml
@@ -50,7 +50,7 @@ El objetivo del laboratorio es configurar un ambiente de QA y un ambiente de pro
 - site-3tier-app
 ## obtener informacion de las instancias y agregarlas a un nventario
 -- osp-facts
-## habilitar sudo, configurar repositorio, instalar python, git, ansible
+## ___habilitar sudo, configurar repositorio, instalar python, git, ansible
 -- base-config
 ## __Configurar balanceador, archivo creado desde cero
 -- lb-tier
