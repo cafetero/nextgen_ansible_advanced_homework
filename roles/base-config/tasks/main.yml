@@ -12,7 +12,7 @@
   yum_repository:
     name: internal
     description: Internal Repo
-    baseurl: http://192.168.0.5/repos/
+    baseurl: http://192.168.0.5/repos/rhel-7-server-rpms
  
 - name: install base tools and packages
   yum:
