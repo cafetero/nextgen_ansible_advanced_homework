@@ -5,7 +5,6 @@
   os_server:
     cloud: openstack
     name: "{{ item.0.name }}"
-    password: r3dh4t1!
     image: "{{ item.0.image }}"
     key_name: "{{ item.0.key_name }}"
     flavor: "{{ item.0.flavor }}"
@@ -31,6 +30,15 @@
   tags:
   - test.servers
 
+- name: Add user
+  os_user:
+    cloud: openstack
+    state: present
+    name: cloud-user
+    password: r3dh4t1!
+  with_dict: "{{osp_servers}}"
+  tags:
+  - test.servers
 
 - name: Add floating IP to Servers
   os_floating_ip:
