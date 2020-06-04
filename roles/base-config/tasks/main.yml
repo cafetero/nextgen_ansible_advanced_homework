@@ -12,7 +12,7 @@
   yum_repository:
     name: internal
     description: Internal Repo
-    baseurl: https://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
+    baseurl: http://192.168.0.5/repos/
  
 - name: install base tools and packages
   yum:
