@@ -1,74 +1,55 @@
-Role Name
+Homework description
 =========
-El objetivo del laboratorio es configurar un ambiente de QA y un ambiente de producci√n de la aplicaci√n 3 tier app. 
-
-# Desplegar el laboratorio de Ansible tower donde se configura tower en HA y el laboratorio de OpenStack
-
-# Configurar la comunicacion entre Bastion del lab de Tower con Workstation del lab de OpenStack para que este ultimo sea el nodo aislado
-- site-setup-prereqs 
-##
--- setup-workstation
-### Configuar llave "http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub" , instalar python3, git, openstacksdk, /etc/openstack/clouds.yaml 
---- pre-tasks
-##
--- osp-setup
-### Configuar OSP, crear imagenes, sabores, llaves, red, security group
---- create-image.yml
---- create-flavor.yml
---- create-keypair.yml
---- create-network.yml
---- create-sg.yml
-## Configurar workstation como nodo aislado de ansible con usuario cloud-user y llave openstack.pem,script /root/ansible-tower-setup-latest/setup.sh
--- site-install-isolated-node
+The goal of the lab is to deploy a Tower environment, an openstack environment, and use the openstack workstation as an isolated node to deploy a QA environment from the demo 3 Tier App, then deploy the production environment of the 3 Tier App on amazon and finally configure everything in a workflow in tower.
 
 
-# Configurar los jobs y workflows en tower
-- site-config-tower.yml
-##
--- config-tower
-### Copiar variables y llaves
---- pre-config-tower.yml
-### __Crear proyecto a mano en tower 00_Homework_Asignment relacionando el repositorio de GIT https://github.com/cafetero/nextgen_ansible_advanced_homework.git
-### crear credenciale en tower, crear inventario, grupo, agregar workstation y asociarlo a un grupo, llaves
---- post-config-tower.yml
-### Crear inventario dinamico, crear grupos, crear tags, crear grupos relacionados con los tags, mas relaconado con Amazon
---- ec2_dynamic.yml
-### Crear templates en tower, template para desplegar instancias, vault password, template para deslegar 3 tier app en QA, template para llaves en AWS
---- job_template.yml
-### Crear el workflow uniendo todos los templates creados
---- workflow_template.yml
+# Config labs to work togeter 
+
+|-- site-setup-prereqs | Config Bastion-Workstation communication to use Workstation as isolated node
+|  |
+|  |-- setup-workstation
+|  |   |-- pre-tasks | Config keys, install python3, git, openstacksdk, /etc/openstack/clouds.yaml 
+|  |-- osp-setup | Config OSP, create imagenes, flavors, keys, network, security group
+|  |   |-- create-image.yml
+|  |   |-- create-flavor.yml
+|  |   |-- create-keypair.yml
+|  |   |-- create-network.yml
+|  |   |-- create-sg.yml
+|  |-- site-install-isolated-node | Config workstation as isolated node with cloud-user and openstack.pem key 
 
 
-# playbook para desplegar las instancias
-- site-osp-instances
-## __ Crear las intancias, __ este archivo se creo desde cero
--- osp-servers
-### informacion de los servidores a desplegar con las llaves
---- var/main.yml
+# Config jobs and workflows on tower
+|-- site-config-tower.yml
+|   |-- config-tower
+|   |   |-- pre-config-tower.yml | Copy vars and keys
+|   |   |-- post-config-tower.yml | correcto Add project in script, create credentials, inventory, groups, keys
+|   |   |-- ec2_dynamic.yml | Create dynamic inventory, tags, groups..
+|   |   |-- job_template.yml | Create templates to depoy instances, config vault passwords, deploy 3 tier app 
+|   |   |-- workflow_template.yml | Create Workflow
 
-# playbook para desplegar los servicios
-- site-3tier-app
-## obtener informacion de las instancias y agregarlas a un nventario
--- osp-facts
-## ___habilitar sudo, configurar repositorio, instalar python, git, ansible
--- base-config
-## __Configurar balanceador, archivo creado desde cero
--- lb-tier
-## __Configurar app, archivo creado desde cero
--- app-tier
-## __configurar base de datos, archivo creado desde cero
--- db-tier
+# Deploy OSP Instances 
+|-- site-osp-instances
+|   |-- osp-servers | Create Instances, PLAYBOOK BUILD FROM SCRATCH
+|   |   |-- var/main.yml | Servers to deploy
 
-# ___probar que los servidores de QA tienen configurado el mensaje en html 
-- site-smoke-osp
+# Deploy 3 Tier App
+|-- site-3tier-app
+|   |-- osp-facts | Get OSP Instances facts and add to inventory
+|   |-- base-config | Enable sudo, config repository, install python, git, ansible
+|   |-- lb-tier | Config load balancer, PLAYBOOK BUILD FROM SCRATCH
+|   |-- app-tier | Config App, PLAYBOOK BUILD FROM SCRATCH
+|   |-- db-tier | config DB, PLAYBOOK BUILD FROM SCRATCH
 
-# ___si la prueba de QA falla se borran las instancias de OpenStack
-- site-osp-delete
+# Test QA Servers 
+|-- site-smoke-osp | BUILD FROM SCRATCH
 
-# ___desplegar el ambiente, cambiar el nombre del lab "Ansible Advanced - Three Tier App"
-- aws_provsion
+# Delete OSP Instances if smoketest fail 
+|-- site-osp-delete
 
-# ___probar que los servidores de produccion funconan correctamente 
+# Deploy production 
+- aws_provsion | Change Lab name "Ansible Advanced - Three Tier App"
+
+# Test production  
 - site-smoketest-aws
 
 
