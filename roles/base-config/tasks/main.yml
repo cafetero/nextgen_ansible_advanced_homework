@@ -18,10 +18,6 @@
   stat: path=/etc/yum.repos.d/internal.repo
   register: int_stat
 
-- name: rm internal
-  command: rm /etc/yum.repos.d/internal.repo
-  when: int_stat.stat.exists
-
 - name: stat epel
   stat: path=/etc/yum.repos.d/epel*
   register: epel_stat
